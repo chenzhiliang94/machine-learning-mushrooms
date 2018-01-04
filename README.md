@@ -74,9 +74,13 @@ Decision trees contain implicit feature selection. In fact, the alogrithm itself
 
 To decide what features to select in the tree, we use the information gain criterion - [See here under Metrics - Information gain](https://en.wikipedia.org/wiki/Decision_tree_learning). Intuitively, the information gain criterion dictates which features allow us to gain the most insight from - for example, if likelihood of a poisonous mushroom to have thin stalk or fat stalk is around the same, the feature of stalk size does not give us much information; on the other hand, if 95% of poisonous mushooms have thin stalks, then the fature of stalk size give us more information gain.
 
-Deciding on the size of the decision tree is important as well - we set the depth of the tree to log(total number of features) to prevent overfitting. There are other methods to prune the size of a decision tree such as tree-pruning. However, because setting the max depth of the tree to 5 already gives remarkably result, we will not be implementing tree-pruning here.
+Deciding on the size of the decision tree is important as well - we set the depth of the tree to log(total number of features) to prevent overfitting. There are other methods to prune the size of a decision tree such as tree-pruning. However, because setting the max depth of the tree to 5 already gives remarkably results, we will not be implementing tree-pruning here.
 
 This is the pyplot visualisation of the tree created from the data:
+<p align="center" style="padding:25px">
+  <img src="Mushroom/mushrooms.csv.png" width="700"><br>
+</p>
+
 
 
 
