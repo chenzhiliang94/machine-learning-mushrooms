@@ -26,14 +26,14 @@ def logReg(csv_String, result_Name):
     class_col = logReg_data['class']
     del logReg_data['class']
     
+    #Find all correlated variables with correlation > 0.9 and remove a subset of them to reduce correlation
+    correlation_Threshold = 0.9
     correlation_matrix = logReg_data.corr()
-
-    correlation_matrix.loc[:,:] =  np.tril(correlation_matrix, k=-1) # borrowed from Karl D's answer
-
+    correlation_matrix.loc[:,:] =  np.tril(correlation_matrix, k=-1) 
     already_in = set()
     result = []
     for col in correlation_matrix:
-        perfect_corr = correlation_matrix[col][correlation_matrix[col] > 0.9].index.tolist()
+        perfect_corr = correlation_matrix[col][correlation_matrix[col] > correlation_Threshold].index.tolist()
         if perfect_corr and col not in already_in:
             already_in.update(set(perfect_corr))
             perfect_corr.append(col)
