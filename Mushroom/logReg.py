@@ -13,7 +13,7 @@ from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
-from sklearn.decomposition import PCA
+
 
 '''
 logistic regression: using value based dependent variables map ->  multi-categorical result 
@@ -22,16 +22,30 @@ e.g age, height -> gender;
 '''
 def logReg(csv_String, result_Name): 
     
-    logReg_data = convertToDummy(csv_String, result_Name) 
+    logReg_data = convertToDummy(csv_String, result_Name, drop = False)
+    class_col = logReg_data['class']
     del logReg_data['class']
-    correlation_matrix = logReg_data.corr()
-    #correlation_matrix.to_csv('corr_out.csv')
-    print(correlation_matrix)
-    #correlation_matrix.to_csv('correlation_matrix')
-    plt.matshow(correlation_matrix)
-    plt.show()
     
-    ''''Y = logReg_data.values[:,0]
+    correlation_matrix = logReg_data.corr()
+
+    correlation_matrix.loc[:,:] =  np.tril(correlation_matrix, k=-1) # borrowed from Karl D's answer
+
+    already_in = set()
+    result = []
+    for col in correlation_matrix:
+        perfect_corr = correlation_matrix[col][correlation_matrix[col] > 0.9].index.tolist()
+        if perfect_corr and col not in already_in:
+            already_in.update(set(perfect_corr))
+            perfect_corr.append(col)
+            result.append(perfect_corr)
+    for correlated_subset in  result:
+        for features in correlated_subset[1:]:
+            del logReg_data[features]
+     
+    logReg_data.insert(0,'class',class_col)
+    print(logReg_data)
+
+    Y = logReg_data.values[:,0]
     X = logReg_data.values[:, 1:118] 
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.9, random_state = 100)
     
@@ -44,4 +58,3 @@ def logReg(csv_String, result_Name):
     confusion_matrix=metrics.confusion_matrix(y_test,y_pred)
     print(confusion_matrix)
     print(classification_report(y_test, y_pred, digits=10)) #compare Y prediction with Y actual result
-'''
