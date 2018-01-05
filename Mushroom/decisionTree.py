@@ -16,7 +16,7 @@ Simple Decision Tree
 '''
 def decisionTree(csv_String, result_Name):
     
-    simpleDecisionTree_data = convertToDummy(csv_String, result_Name) 
+    simpleDecisionTree_data = convertToDummy(csv_String, result_Name, drop = False) 
     
     Y = simpleDecisionTree_data.values[:,0]
     X = simpleDecisionTree_data.values[:, 1:118] 
