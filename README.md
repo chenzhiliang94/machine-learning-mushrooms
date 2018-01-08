@@ -56,14 +56,13 @@ final categorization of a mushroom is binary:
 ## The methodology
 Machine learning allows us to use techniques to study a training data set and subsequently predict the class of future data not in the training data set.
 In particular for this session, we will use 10%-70% of 8000 mushroom species observations for training, and the rest to test for the prediction accuracy of different machine learning alogrithms.
-We will be be using 5 classifier machine learning techniques from the scikit-learn python package:
+We will be be using 4 classifier machine learning techniques from the scikit-learn python package:
 - Simple Decision Tree
 - Logistic Regression
 - Naive Bayes
 - K Nearest Neighbours
-- Stochastic gradient Descent
 
-In addition, due to the large amount of features for each observation, we be subjecting the data to feature selection. There are 3 kinds of feature selection - filter, wrapper and embedded methods. In the 5 algorithms mentioned above, some already have implicit feature selection steps while others require some preprocessing feature selection.
+In addition, due to the large amount of features for each observation, we be subjecting the data to feature selection and feature extraction. There are 3 kinds of feature selection - filter, wrapper and embedded methods. In the 5 algorithms mentioned above, some already have implicit feature selection steps while others require some preprocessing feature selection.
 
 ## The preprocessing - part 1
 We first convert all categorical features into dummy variables. [See why we need to do this](https://stats.stackexchange.com/questions/115049/why-do-we-need-to-dummy-code-categorical-variables)<br>
@@ -115,6 +114,17 @@ Since we are using dummy variables for our features, we use bernoulli naive baye
 
 Now, because Naive Bayes assumes independence between features, we **would** expect the accuracy of this algorithm to be lower than other ML algorithms. Now, if we reduce the correlation threshold removal for feature selection to 0.75, we increase the prediction accuracy to 94.11%. This makes sense because moderate to high correlation between variables indicates non-independence - a violation of the independence assumption for Naive Bayes. Removing even moderately correlated variables would bolster the accuracy.
 
+### K Nearest Neighbours
+Training set: 30%
+Test set: 70%
+Prediction accuracy: 99.9% (With PCA variance cumulative ratio = 0.9)
+
+Given a predefined integer K, [K Nearest Neighbour](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm) searches for K datapoints that are defined 'nearest' to a test datapoint and returns the most probably classification of the test datapoint. In our case, because all features are of binary values, we use the manhattan distance as a measure of closeness between datapoints.
+
+#### Feature Extraction
+However, KNN algorithm suffers from the curse of dimensionality - in high dimensional data, all objects appear to be sparse and dissimilar in many ways, which prevents an effective model to be created. We attempt to solve this with feature extraction.
+Setting the cumulative variance ratio to 0.9 (that is, the new components created via PCA would account for 90% of the variance in the original data), we use [Principle Component Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis) to reduce the number of features to 30. 
+After that, KNN algorithm is run over the test set to give the above prediction accuracy.
 
 
 
